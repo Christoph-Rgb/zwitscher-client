@@ -1,0 +1,23 @@
+<template>
+
+  <article class="ui stacked segment">
+    <h3 class='ui dividing header'> Donations to Date </h3>
+    <table class="ui celled table segment">
+      <thead>
+      <tr>
+        <th>Amount</th>
+        <th>Method donated</th>
+        <th>Candidate</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr repeat.for="donation of donations">
+        <td> ${donation.amount}</td>
+        <td> ${donation.method}</td>
+        <td> ${donation.candidate.lastName}, ${donation.candidate.firstName}</td>
+      </tr>
+      </tbody>
+    </table>
+  </article>
+
+</template>
