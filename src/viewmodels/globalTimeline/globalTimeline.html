@@ -1,5 +1,4 @@
 <template>
-
   <article class="ui basic stacked segment">
     <div class="ui fluid stackable cards">
       <div repeat.for="tweet of tweets" class="ui fluid raised card">
@@ -31,19 +30,15 @@
             <p>${tweet.message}</p>
           </div>
         </div>
-        <!--{{#if tweet.canDelete}}-->
-        <!--<div class="extra content">-->
-          <!--<div class="right floated trash icon">-->
-            <!--<form class="ui form" action="/{{displayedTimeline}}/deleteTweet" method="post">-->
-              <!--<input type="hidden" name="tweetID" value="{{tweet._id}}">-->
-              <!--<input type="hidden" name="viewedUserID" value="{{tweet.user._id}}">-->
-              <!--<button class="ui basic brown compact icon submit button">-->
-                <!--<i class="trash icon"></i>-->
-              <!--</button>-->
-            <!--</form>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--{{/if}}-->
+        <div if.bind="tweet.canDelete" class="extra content">
+          <div class="right floated trash icon">
+            <form submit.trigger="deleteTweet(tweet._id)" class="ui form">
+              <button class="ui basic brown compact icon submit button">
+                <i class="trash icon"></i>
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </article>

@@ -75,4 +75,17 @@ export default class ZwitscherService {
       });
     });
   }
+
+  deleteTweet(tweetToDeleteID) {
+    return new Promise((resolve, reject) => {
+      this.ac.delete('/api/tweets/' + tweetToDeleteID).then(result => {
+        if(result.statusCode === 204) {
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      });
+    });
+
+  };
 }
