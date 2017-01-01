@@ -1,6 +1,10 @@
 <template bindable="router">
-  <nav class="ui inverted menu">
-    <header class="header item"><a href="/"> Zwitscher </a></header>
+  <nav class="ui secondary pointing brown menu">
+    <header class="header item">
+      <a href="/">
+        <img class="ui mini image" src="/src/images/zwitscherIcons/zwitscher_48_48.png">
+      </a>
+    </header>
     <div class="right menu">
       <div repeat.for="row of router.navigation">
         <a class="${row.isActive ? 'active' : ''} item"  href.bind="row.href">${row.title}</a>

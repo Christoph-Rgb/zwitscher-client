@@ -1,8 +1,25 @@
+<!--<template>-->
+
+  <!--<form submit.delegate="logout($event)" class="ui stacked segment form">-->
+    <!--<h3 class="ui header">Are you sure you want to log out?</h3>-->
+    <!--<button class="ui brown submit button">Logout</button>-->
+  <!--</form>-->
+
+<!--</template>-->
+
 <template>
-
-  <form submit.delegate="logout($event)" class="ui stacked segment form">
-    <h3 class="ui header">Are you sure you want to log out?</h3>
-    <button class="ui blue submit button">Logout</button>
-  </form>
-
+  <section class="ui basic segment">
+    <div class="ui middle aligned center aligned grid">
+      <aside class="ui six wide column">
+        <img src="/src/images/zwitscherIcons/zwitscher_512_512.png" class="ui medium image">
+      </aside>
+      <form submit.delegate="logout($event)" class="ui six wide column fluid form">
+        <div class="ui stacked segment">
+          <h3 class="ui header">Are you sure you want to log out?</h3>
+          <button class="ui brown submit button">Logout</button>
+        </div>
+      </form>
+    </div>
+  </section>
 </template>
+
