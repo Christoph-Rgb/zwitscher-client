@@ -86,6 +86,17 @@ export default class ZwitscherService {
         }
       });
     });
-
   };
+
+  postTweet(tweet) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/tweets', tweet).then(result => {
+        if(result.statusCode === 201) {
+          resolve(result.response);
+        } else {
+          reject(null);
+        }
+      });
+    });
+  }
 }

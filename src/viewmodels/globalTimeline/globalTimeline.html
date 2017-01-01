@@ -1,5 +1,6 @@
 <template>
   <article class="ui basic stacked segment">
+    <compose view-model="../postTweet/postTweet"></compose>
     <div class="ui fluid stackable cards">
       <div repeat.for="tweet of tweets" class="ui fluid raised card">
         <!--{{#if tweet.canDelete}}-->
