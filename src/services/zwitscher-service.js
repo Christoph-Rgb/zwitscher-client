@@ -10,6 +10,15 @@ export default class ZwitscherService {
   constructor(ea, ac) {
     this.ea = ea;
     this.ac = ac;
+    this.loggedInUser = null;
+
+    ea.subscribe(LoginStatus, msg => {
+      if (msg.status.success === true) {
+        this.loggedInUser = msg.status.user;
+      } else {
+        this.loggedInUser = null;
+      }
+    });
   }
 
   getUsers() {
@@ -51,5 +60,19 @@ export default class ZwitscherService {
 
   isAuthenticated() {
     return this.ac.isAuthenticated();
+  }
+
+  getTweets() {
+    return new Promise((resolve, reject) => {
+      this.ac.get('/api/tweets/users/' + this.loggedInUser._id).then(result => {
+
+        let tweets = [];
+        if(result.statusCode === 200){
+          tweets = JSON.parse(result.response);
+        }
+
+        resolve(tweets);
+      });
+    });
   }
 }

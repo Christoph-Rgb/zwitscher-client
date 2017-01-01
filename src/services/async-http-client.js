@@ -67,6 +67,7 @@ export default class AsyncHttpClient {
         const auth = JSON.parse(localStorage.zwitscher);
         if (auth){ //TODO: Check why needs to be checked
           http.withHeader('Authorization', 'bearer ' + auth.token);
+          this.ea.publish(new LoginStatus(auth));
         }
       });
     }
