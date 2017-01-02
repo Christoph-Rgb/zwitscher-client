@@ -1,33 +1,31 @@
 <template>
-  <div class="ui fluid stackable cards">
-    <div class="ui fluid raised card">
-      <form submit.trigger="postTweet()" class="ui form" id="tweetForm" enctype='multipart/form-data'>
-        <div class="ui fluid raised card">
-          <div class="extra content">
-            <div class="left floated author">
-              <img class="ui avatar image" src="${loggedInUser.profilePicture}"> ${loggedInUser.firstName} ${loggedInUser.lastName}
-            </div>
-            <div class="right floated">
-              <div class="ui icon button" id="camerabutton">
-                <i class="camera icon"></i></div>
-              <button class="ui brown submit button">Post</button>
-            </div>
+  <div class="ui fluid raised card">
+    <form submit.trigger="postTweet()" class="ui form" id="tweetForm" enctype='multipart/form-data'>
+      <div class="ui fluid raised card">
+        <div class="extra content">
+          <div class="left floated author">
+            <img class="ui avatar image" src="${loggedInUser.profilePicture}"> ${loggedInUser.firstName} ${loggedInUser.lastName}
           </div>
-          <div class="ui content">
-            <div class="description">
-              <div class="ui basic segment" id="imageSegment" style="display:none">
-                <img class="ui fluid rounded image" id="imagePreview" src="">
-              </div>
-              <div class="ui fluid input">
-                <input type="text" name="tweetMessage" placeholder="Share your thoughts" value.bind="tweetMessage">
-              </div>
-              <div class="field">
-                <input type="file" name="tweetImage" id="fileInput" accept="image/*" files.bind="tweetImage"  style="display:none">
-              </div>
+          <div class="right floated">
+            <div class="ui icon button" id="camerabutton">
+              <i class="camera icon"></i></div>
+            <button class="ui brown submit button">Post</button>
+          </div>
+        </div>
+        <div class="ui content">
+          <div class="description">
+            <div class="ui basic segment" id="imageSegment" style="display:none">
+              <img class="ui fluid rounded image" id="imagePreview" src="">
+            </div>
+            <div class="ui fluid input">
+              <input type="text" name="tweetMessage" placeholder="Share your thoughts" value.bind="tweetMessage">
+            </div>
+            <div class="field">
+              <input type="file" name="tweetImage" id="fileInput" accept="image/*" files.bind="tweetImage"  style="display:none">
             </div>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </template>

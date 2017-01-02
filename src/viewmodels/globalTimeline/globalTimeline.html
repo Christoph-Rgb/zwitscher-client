@@ -1,9 +1,8 @@
 <template>
   <section class="ui centered stackable grid">
     <div class="ui eleven wide stacked column">
-      <!--<article class="ui basic stacked segment">-->
-        <compose view-model="../postTweet/postTweet"></compose>
         <div class="ui fluid stackable cards">
+          <compose view-model="../postTweet/postTweet" containerless></compose>
           <div repeat.for="tweet of tweets" class="ui fluid raised card">
             <!--{{#if tweet.canDelete}}-->
             <!--<div class="extra content deleteSelector" style="display:none">-->
@@ -44,7 +43,6 @@
             </div>
           </div>
         </div>
-      <!--</article>-->
     </div>
 
     <div class="ui four wide column">
