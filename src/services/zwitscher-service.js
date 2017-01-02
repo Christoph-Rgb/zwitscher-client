@@ -99,4 +99,16 @@ export default class ZwitscherService {
       });
     });
   }
+
+  getUser(userID) {
+    return new Promise((resolve, reject) => {
+      this.ac.get('/api/users/' + userID).then(result => {
+        if(result) {
+          resolve(JSON.parse(result.response));
+        } else {
+          reject(null);
+        }
+      });
+    });
+  };
 }

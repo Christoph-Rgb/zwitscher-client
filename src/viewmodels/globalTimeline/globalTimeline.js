@@ -8,11 +8,13 @@ export class GlobalTimeline {
 
   tweets = [];
   loggedInUser = {};
+  userID = '';
 
   constructor(zs, ea) {
     this.zwitscherService = zs
     this.eventAgregator = ea;
     this.loggedInUser = this.zwitscherService.loggedInUser;
+    this.userID = this.loggedInUser._id;
 
     this.eventAgregator.subscribe(TweetUpdate, msg => {
       this.refreshTimeline();
@@ -31,6 +33,7 @@ export class GlobalTimeline {
 
       if (indexToRemove > -1) {
         this.tweets.splice(indexToRemove, 1);
+        this.eventAgregator.publish(new TweetUpdate({}));
         console.log('tweet deleted successfully');
       }
     }).catch(err => {
