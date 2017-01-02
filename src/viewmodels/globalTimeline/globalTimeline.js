@@ -1,28 +1,26 @@
 import {inject} from 'aurelia-framework';
 import ZwitscherService from '../../services/zwitscher-service';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {TweetUpdate} from '../../services/messages';
 
-@inject(ZwitscherService)
+@inject(ZwitscherService, EventAggregator)
 export class GlobalTimeline {
 
   tweets = [];
   loggedInUser = {};
 
-  constructor(zs) {
+  constructor(zs, ea) {
     this.zwitscherService = zs
+    this.eventAgregator = ea;
     this.loggedInUser = this.zwitscherService.loggedInUser;
+
+    this.eventAgregator.subscribe(TweetUpdate, msg => {
+      this.refreshTimeline();
+    });
   }
 
   attached() {
-    this.zwitscherService.getTweets().then(tweets => {
-
-      tweets.forEach(tweet => {
-        tweet.postedString = new Date(tweet.posted).toLocaleString('en-GB');
-        tweet.canDelete = this.loggedInUser._id === tweet.user._id;
-        this.tweets.push(tweet);
-      })
-
-      console.log(this.tweets);
-    });
+    this.refreshTimeline();
   }
 
   deleteTweet(tweetToDeleteID) {
@@ -38,5 +36,26 @@ export class GlobalTimeline {
     }).catch(err => {
       console.log('tweet could not be deleted');
     })
+  }
+
+  refreshTimeline(){
+    this.tweets = [];
+    this.zwitscherService.getTweets().then(tweets => {
+
+      tweets.sort((tweet1, tweet2) => {
+        const posted1 = new Date(tweet1.posted);
+        const posted2 = new Date(tweet2.posted);
+
+        return posted2.getTime() - posted1.getTime();
+      });
+
+      tweets.forEach(tweet => {
+        tweet.postedString = new Date(tweet.posted).toLocaleString('en-GB');
+        tweet.canDelete = this.loggedInUser._id === tweet.user._id || this.loggedInUser.scope === 'admin';
+        this.tweets.push(tweet);
+      })
+
+      console.log(this.tweets);
+    });
   }
 }

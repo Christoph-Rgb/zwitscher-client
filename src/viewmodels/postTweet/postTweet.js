@@ -1,53 +1,23 @@
 import {inject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
 import ZwitscherService from '../../services/zwitscher-service';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {TweetUpdate} from '../../services/messages';
 
-@inject(ZwitscherService, Router)
+@inject(ZwitscherService, EventAggregator)
 export class GlobalTimeline {
 
   loggedInUser = {};
   tweetMessage = '';
-  tweetImage = {};
+  tweetImage = null;
 
-  constructor(zs, router) {
+  constructor(zs,ea) {
     this.zwitscherService = zs;
-    this.router = router;
+    this.eventAgregator = ea;
     this.loggedInUser = this.zwitscherService.loggedInUser;
   }
 
   attached() {
-    $('#tweetForm #camerabutton')
-      .on('click', function (e) {
-        $('#tweetForm #fileInput', $(e.target).parents()).click();
-      });
-
-    $('#tweetForm #fileInput').on('change', function (input) {
-      var $preview = $('#tweetForm #imagePreview');
-      if (this.files && this.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          $('#tweetForm #imagePreview').attr('src', e.target.result);
-          $('#imageSegment').attr('style', 'display: block');
-        };
-
-        reader.readAsDataURL(this.files[0]);
-      } else {
-        $('#tweetForm #imagePreview').removeAttr('src');
-        $('#imageSegment').attr('style', 'display: none');
-      }
-    });
-
-    $('#tweetForm #imagePreview')
-      .on('click', function (e) {
-        var $control = $('#tweetForm #fileInput');
-        control.replaceWith($control.val('').clone(true));
-        $('#tweetForm #imagePreview').removeAttr('src');
-        $('#imageSegment').attr('style', 'display: none');
-      });
-
-    $('#tweetForm').on('submit', function () {
-      $('#tweetForm').addClass('loading disabled');
-    });
+    initilizeUploadForm();
   }
 
   postTweet() {
@@ -62,7 +32,9 @@ export class GlobalTimeline {
         this.zwitscherService.postTweet(tweet).then(postedTweet => {
           console.log('tweet posted');
           //https://github.com/aurelia/router/issues/201
-          this.router.navigateToRoute('reload');
+          // this.router.navigateToRoute('reload');
+          this.eventAgregator.publish(new TweetUpdate({}));
+          this.reinitializeUploadForm();
         }).catch(err => {
           console.log('tweet could not be posted');
         })
@@ -71,13 +43,20 @@ export class GlobalTimeline {
         });
     } else {
       this.zwitscherService.postTweet(tweet).then(postedTweet => {
-        console.log('tweet posted');
-        //https://github.com/aurelia/router/issues/201
-        this.router.navigateToRoute('reload');
+        this.eventAgregator.publish(new TweetUpdate({}));
+        this.reinitializeUploadForm();
       }).catch(err => {
         console.log('tweet could not be posted');
       })
     }
+  }
+
+  reinitializeUploadForm() {
+    $('#tweetForm').removeClass('loading disabled');
+    $('#tweetForm #imagePreview').attr('src', null);
+    $('#imageSegment').attr('style', 'display: none');
+    this.tweetImage = null;
+    this.tweetMessage = '';
   }
 }
 
@@ -93,5 +72,40 @@ function getBase64(file) {
       reject(null);
     };
     reader.readAsBinaryString(file);
+  });
+}
+
+function initilizeUploadForm(){
+  $('#tweetForm #camerabutton')
+    .on('click', function (e) {
+      $('#tweetForm #fileInput', $(e.target).parents()).click();
+    });
+
+  $('#tweetForm #fileInput').on('change', function (input) {
+    var $preview = $('#tweetForm #imagePreview');
+    if (this.files && this.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('#tweetForm #imagePreview').attr('src', e.target.result);
+        $('#imageSegment').attr('style', 'display: block');
+      };
+
+      reader.readAsDataURL(this.files[0]);
+    } else {
+      $('#tweetForm #imagePreview').removeAttr('src');
+      $('#imageSegment').attr('style', 'display: none');
+    }
+  });
+
+  $('#tweetForm #imagePreview')
+    .on('click', function (e) {
+      var $control = $('#tweetForm #fileInput');
+      control.replaceWith($control.val('').clone(true));
+      $('#tweetForm #imagePreview').removeAttr('src');
+      $('#imageSegment').attr('style', 'display: none');
+    });
+
+  $('#tweetForm').on('submit', function () {
+    $('#tweetForm').addClass('loading disabled');
   });
 }
