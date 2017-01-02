@@ -1,0 +1,19 @@
+<template>
+  <section class="ui centered stackable grid">
+
+    <div class="ui eleven wide stacked column">
+      <div class="ui stackable cards">
+        <compose repeat.for="user of users" view-model="../user/user" model.bind="user._id" ></compose>
+      </div>
+    </div>
+
+    <!--{{#if isAdmin}}-->
+    <!--<div class="ui four wide stacked column">-->
+      <!--<div class="ui stackable cards">-->
+        <!--{{> userButtonsCard }}-->
+        <!--{{> deleteCard }}-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--{{/if}}-->
+  </section>
+</template>

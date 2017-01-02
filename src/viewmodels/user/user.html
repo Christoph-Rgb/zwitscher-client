@@ -1,60 +1,51 @@
 <template>
-  <div class="ui fluid stackable cards">
-    <div class="ui fluid raised card">
-
-
-      <div class="ui raised card">
-        <!--<div if.bind="canDelete" class="extra content deleteSelector" style="display:none">-->
-          <!--<div class="right floated">-->
-            <!--<div class="field">-->
-              <!--<div class="ui toggle checkbox">-->
-                <!--<input id="{{_id}}" class="deleteCheckbox" type="checkbox" name="test">-->
-                <!--<label>Delete</label>-->
-              <!--</div>-->
-            <!--</div>-->
+  <div class="ui raised card">
+    <!--<div if.bind="canDelete" class="extra content deleteSelector" style="display:none">-->
+      <!--<div class="right floated">-->
+        <!--<div class="field">-->
+          <!--<div class="ui toggle checkbox">-->
+            <!--<input id="{{_id}}" class="deleteCheckbox" type="checkbox" name="test">-->
+            <!--<label>Delete</label>-->
           <!--</div>-->
         <!--</div>-->
-        <div class="image">
-          <img class="ui image" src="${viewedUser.profilePicture}">
-        </div>
-        <div class="content">
-          <div class="header">${viewedUser.firstName} ${viewedUser.lastName}</div>
-          <div class="description">
-            joined ${viewedUser.joinedString}
-          </div>
-        </div>
-        <div class="extra content">
-          <div if.bind="viewedUser.canFollow" class="left floated">
-            <i if.bind="isFollowing" id="${viewedUser._id}" class="yellow star icon unfollowIcon"></i>
-            <i if.bind="!isFollowing" id="${viewedUser._id}" class="empty star icon followIcon"></i>
-          </div>
-          <div class="right floated">
-            ${viewedUser.tweetCount}
-            <i class="comments icon"></i>
-          </div>
-          <div class="right floated">
-            ${viewedUser.follows.length}
-            <i class="spy icon"></i>
-          </div>
-          <!--<div class="right floated">-->
-            <!--${viewedUser.followerCount}-->
-            <!--<i class="users icon"></i>-->
-          <!--</div>-->
-        </div>
-        <div if.bind="viewedUser.canDelete" class="extra content">
-          <div class="right floated trash icon">
-            <form class="ui form" action="/users/removeUser" method="post">
-              <input type="hidden" name="viewedUserID" value="{{_id}}">
-              <button class="ui basic brown compact icon submit button">
-                <i class="trash icon"></i>
-              </button>
-            </form>
-          </div>
-        </div>
+      <!--</div>-->
+    <!--</div>-->
+    <div class="image">
+      <img class="ui image" src="${viewedUser.profilePicture}">
+    </div>
+    <div class="content">
+      <div class="header">${viewedUser.firstName} ${viewedUser.lastName}</div>
+      <div class="description">
+        joined ${viewedUser.joinedString}
       </div>
-
-
-
+    </div>
+    <div class="extra content">
+      <div if.bind="viewedUser.canFollow" class="left floated">
+        <i if.bind="viewedUser.isFollowing" click.delegate="unfollowUser(viewedUser._id)" class="yellow star icon"></i>
+        <i if.bind="!viewedUser.isFollowing" click.delegate="followUser(viewedUser._id)" class="empty star icon followIcon"></i>
+      </div>
+      <div class="right floated">
+        ${viewedUser.tweetCount}
+        <i class="comments icon"></i>
+      </div>
+      <div class="right floated">
+        ${viewedUser.follows.length}
+        <i class="spy icon"></i>
+      </div>
+      <!--<div class="right floated">-->
+        <!--${viewedUser.followerCount}-->
+        <!--<i class="users icon"></i>-->
+      <!--</div>-->
+    </div>
+    <div if.bind="viewedUser.canDelete" class="extra content">
+      <div class="right floated trash icon">
+        <!--<form class="ui form" action="/users/removeUser" method="post">-->
+          <!--<input type="hidden" name="viewedUserID" value="{{_id}}">-->
+          <button click.delegate="removeUser(viewedUser._id)" class="ui basic brown compact icon button">
+            <i class="trash icon"></i>
+          </button>
+        <!--</form>-->
+      </div>
     </div>
   </div>
 </template>

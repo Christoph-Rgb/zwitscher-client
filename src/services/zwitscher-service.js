@@ -1,6 +1,6 @@
 import {inject} from 'aurelia-framework';
 import Fixtures from './fixtures';
-import {TotalUpdate, LoginStatus} from './messages';
+import {TotalUpdate, LoginStatus, LoggedInUserUpdate} from './messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import AsyncHttpClient from './async-http-client';
 
@@ -19,11 +19,37 @@ export default class ZwitscherService {
         this.loggedInUser = null;
       }
     });
+
+    ea.subscribe(LoggedInUserUpdate, msg => {
+      this.loggedInUser = getUser(this.loggedInUser._id);
+    });
+  }
+
+  getUser(userID){
+    return new Promise((resolve, reject) => {
+      this.ac.get('/api/users/' + userID).then(result => {
+
+        resolve(JSON.parse(result.response));
+
+      }).catch(err => {
+        reject(err);
+      });
+    });
   }
 
   getUsers() {
-    this.ac.get('/api/users').then(res => {
-      this.users = res.content;
+    return new Promise((resolve, reject) => {
+      this.ac.get('/api/users').then(result => {
+
+        let users = [];
+        if(result.statusCode === 200){
+          users = JSON.parse(result.response);
+        }
+        resolve(users);
+
+      }).catch(err => {
+        reject(err);
+      });
     });
   }
 
@@ -92,6 +118,42 @@ export default class ZwitscherService {
     return new Promise((resolve, reject) => {
       this.ac.post('/api/tweets', tweet).then(result => {
         if(result.statusCode === 201) {
+          resolve(result.response);
+        } else {
+          reject(null);
+        }
+      });
+    });
+  }
+
+  unfollowUser(userID) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/users/' + userID + '/unfollow').then(result => {
+        if(result.statusCode === 201) {
+          resolve(result.response);
+        } else {
+          reject(null);
+        }
+      });
+    });
+  }
+
+  followUser(userID) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/users/' + userID + '/follow').then(result => {
+        if(result.statusCode === 201) {
+          resolve(result.response);
+        } else {
+          reject(null);
+        }
+      });
+    });
+  }
+
+  removeUser(userID) {
+    return new Promise((resolve, reject) => {
+      this.ac.delete('/api/users/' + userID).then(result => {
+        if(result.statusCode === 204) {
           resolve(result.response);
         } else {
           reject(null);

@@ -15,8 +15,9 @@ export class Home {
       // { route: 'stats', name: 'stats', moduleId: 'viewmodels/stats/stats', nav: true, title: 'Stats' },
       // { route: 'dashboard', name: 'dashboard', moduleId: 'viewmodels/dashboard/dashboard', nav: true, title: 'Dashboard' },
       { route: ['', 'globalTimeline'], name: 'globalTimeline', moduleId: 'viewmodels/globalTimeline/globalTimeline', nav: true, title: 'Global Timeline' },
+      { route: 'users', name: 'users', moduleId: 'viewmodels/users/users', nav: true, title: 'Users' },
       { route: 'logout', name: 'logout', moduleId: 'viewmodels/logout/logout', nav: true, title: 'Logout' },
-      // { route: 'reload', name: 'reload', moduleId: 'viewmodels/reload/reload',  },
+      { route: 'reload', name: 'reload', moduleId: 'viewmodels/reload/reload',  },
     ]);
 
     config.mapUnknownRoutes(instruction => {

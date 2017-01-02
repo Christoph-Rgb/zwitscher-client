@@ -54,7 +54,7 @@ export class GlobalTimeline {
 
       tweets.forEach(tweet => {
         tweet.postedString = new Date(tweet.posted).toLocaleString('en-GB');
-        tweet.canDelete = this.loggedInUser._id === tweet.user._id || this.loggedInUser.scope === 'admin';
+        tweet.canDelete = (tweet.user !== null && this.loggedInUser._id === tweet.user._id) || this.loggedInUser.scope === 'admin';
         this.tweets.push(tweet);
       })
 

@@ -9,3 +9,9 @@ export class TweetUpdate {
     this.status = status;
   }
 }
+
+export class LoggedInUserUpdate {
+  constructor(status) {
+    this.status = status;
+  }
+}
