@@ -4,20 +4,23 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {TweetUpdate} from '../../services/messages';
 
 @inject(ZwitscherService, EventAggregator)
-export class GlobalTimeline {
+export class UserTimeline {
 
   timelineOptions = {};
-  // loggedInUser = {};
 
   constructor(zs, ea) {
     this.zwitscherService = zs
     this.eventAgregator = ea;
 
-    // this.loggedInUser = this.zwitscherService.loggedInUser;
+    this.timelineOptions.src = 'userTimeline';
+  }
 
-    this.timelineOptions = {
-      src: 'globalTimeline',
-      viewedUserID: this.zwitscherService.loggedInUser._id,
-    };
+  activate(payload) {
+    if (payload && payload.id) {
+      this.timelineOptions.viewedUserID = payload.id;
+    } else {
+      this.timelineOptions.viewedUserID = this.zwitscherService.loggedInUser._id;
+    }
+
   }
 }

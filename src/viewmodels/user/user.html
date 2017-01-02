@@ -10,9 +10,9 @@
         <!--</div>-->
       <!--</div>-->
     <!--</div>-->
-    <div class="image">
-      <img class="ui image" src="${viewedUser.profilePicture}">
-    </div>
+    <a class="image">
+      <img class="ui image" src="${viewedUser.profilePicture}" click.delegate="goToTimeline(viewedUser._id)">
+    </a>
     <div class="content">
       <div class="header">${viewedUser.firstName} ${viewedUser.lastName}</div>
       <div class="description">

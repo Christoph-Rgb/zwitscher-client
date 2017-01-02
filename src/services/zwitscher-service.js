@@ -88,9 +88,23 @@ export default class ZwitscherService {
     return this.ac.isAuthenticated();
   }
 
-  getTweets() {
+  getTweetsForUser() {
     return new Promise((resolve, reject) => {
       this.ac.get('/api/tweets/users/' + this.loggedInUser._id).then(result => {
+
+        let tweets = [];
+        if(result.statusCode === 200){
+          tweets = JSON.parse(result.response);
+        }
+
+        resolve(tweets);
+      });
+    });
+  }
+
+  getTweetsByUser(userID) {
+    return new Promise((resolve, reject) => {
+      this.ac.get('/api/users/' + userID + '/tweets').then(result => {
 
         let tweets = [];
         if(result.statusCode === 200){

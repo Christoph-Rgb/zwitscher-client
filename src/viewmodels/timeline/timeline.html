@@ -1,0 +1,44 @@
+<template>
+  <div class="ui fluid stackable cards">
+    <compose if.bind="loggedInUser._id === timelineUser._id" view-model="../postTweet/postTweet" containerless></compose>
+    <div repeat.for="tweet of tweets" class="ui fluid raised card">
+      <!--{{#if tweet.canDelete}}-->
+      <!--<div class="extra content deleteSelector" style="display:none">-->
+      <!--<div class="right floated">-->
+      <!--<div class="field">-->
+      <!--<div class="ui toggle checkbox">-->
+      <!--<input id="{{tweet._id}}" class="deleteCheckbox" type="checkbox" name="test">-->
+      <!--<label>Delete</label>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--{{/if}}-->
+      <div class="extra content">
+        <div class="left floated author">
+          <img class="ui avatar image" src="${tweet.user.profilePicture}"> ${tweet.user.firstName} ${tweet.user.lastName}
+        </div>
+        <div class="right floated">
+          posted on ${tweet.postedString}
+        </div>
+      </div>
+      <div class="content">
+        <div if.bind="tweet.imagePath" class="ui basic segment">
+          <img class="ui fluid rounded image" src="${tweet.imagePath}">
+        </div>
+        <div class="description">
+          <p>${tweet.message}</p>
+        </div>
+      </div>
+      <div if.bind="tweet.canDelete" class="extra content">
+        <div class="right floated trash icon">
+          <form submit.trigger="deleteTweet(tweet._id)" class="ui form">
+            <button class="ui basic brown compact icon submit button">
+              <i class="trash icon"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

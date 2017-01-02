@@ -97,4 +97,8 @@ export class User {
       console.log(err);
     });
   }
+
+  goToTimeline(userID){
+    this.router.navigateToRoute('userTimeline', { id: userID });
+  }
 }
