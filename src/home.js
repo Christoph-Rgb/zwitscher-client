@@ -13,6 +13,7 @@ export class Home {
       { route: 'userTimeline/:id?', name: 'userTimeline', moduleId: 'viewmodels/userTimeline/userTimeline', nav: true, title: 'User Timeline', href: '#/userTimeline' },
 
       { route: 'users', name: 'users', moduleId: 'viewmodels/users/users', nav: true, title: 'Users' },
+      { route: 'dashboard', name: 'dashboard', moduleId: 'viewmodels/dashboard/dashboard', nav: true, title: 'Dashboard' },
       { route: 'settings', name: 'settings', moduleId: 'viewmodels/settings/settings', nav: true, title: 'Settings' },
       { route: 'logout', name: 'logout', moduleId: 'viewmodels/logout/logout', nav: true, title: 'Logout' },
       { route: 'reload', name: 'reload', moduleId: 'viewmodels/reload/reload',  },

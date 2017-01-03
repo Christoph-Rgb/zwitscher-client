@@ -1,0 +1,15 @@
+<template>
+  <section class="ui stackable two column grid segment">
+    <div class="ui grid column">
+      <compose view-model="../timeline/timeline" model.bind="timelineOptions" containerless></compose>
+    </div>
+    <div class="ui centered grid column">
+      <div class="ui grid row">
+        <compose class="four wide column" view-model="../settings/settings" containerless></compose>
+      </div>
+      <div class="ui grid row">
+        <compose class="four wide column" view-model="../users/users" containerless></compose>
+      </div>
+    </div>
+  </section>
+</template>

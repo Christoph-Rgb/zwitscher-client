@@ -1,44 +1,51 @@
 <template>
   <section class="ui basic segment">
-    <div class="ui middle aligned center aligned grid">
-      <aside class="ui six wide column">
-        <img src="${loggedInUser.profilePicture}" class="ui medium image">
-      </aside>
-      <form submit.delegate="update()" class="ui six wide column fluid form">
-        <div class="ui stacked segment">
-          <h3 class="ui header">Settings</h3>
-          <div class="two fields">
-            <div class="field">
-              <label>First Name</label>
-              <input placeholder="First Name" type="text" value.bind="loggedInUser.firstName">
+    <!--<div class="ui middle aligned center aligned grid">-->
+      <!--<aside class="ui eight wide column">-->
+        <!--<img src="${loggedInUser.profilePicture}" class="ui centered medium image">-->
+      <!--</aside>-->
+      <form submit.delegate="update()" class="ui eight wide column fluid form">
+        <div class="ui middle aligned center aligned grid">
+          <aside class="ui eight wide column">
+            <img src="${loggedInUser.profilePicture}" class="ui centered medium image">
+          </aside>
+          <div class="ui center aligned middle aligned stacked segment">
+            <h3 class="ui header">Account Settings</h3>
+            <div class="two fields">
+              <div class="field">
+                <label>First Name</label>
+                <input placeholder="First Name" type="text" value.bind="loggedInUser.firstName">
+              </div>
+              <div class="field">
+                <label>Last Name</label>
+                <input placeholder="Last Name" type="text" value.bind="loggedInUser.lastName">
+              </div>
             </div>
             <div class="field">
-              <label>Last Name</label>
-              <input placeholder="Last Name" type="text" value.bind="loggedInUser.lastName">
+              <label>Gender</label>
+              <select class="ui dropdown" value.bind="loggedInUser.gender">
+                <option value="M">male</option>
+                <option value="W">female</option>
+              </select>
             </div>
+            <div class="field">
+              <label>Email</label>
+              <input placeholder="Email" type="text" value.bind="loggedInUser.email">
+            </div>
+            <div class="field">
+              <label>Old Password</label>
+              <input placeholder="Password" type="password" value.bind="loggedInUser.oldPassword">
+            </div>
+            <div class="field">
+              <label>New Password</label>
+              <input placeholder="Password" type="password" value.bind="loggedInUser.password">
+            </div>
+            <button class="ui brown submit button">Update</button>
           </div>
-          <div class="field">
-            <label>Gender</label>
-            <select class="ui dropdown" value.bind="loggedInUser.gender">
-              <option value="M">male</option>
-              <option value="W">female</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Email</label>
-            <input placeholder="Email" type="text" value.bind="loggedInUser.email">
-          </div>
-          <div class="field">
-            <label>Old Password</label>
-            <input placeholder="Password" type="password" value.bind="loggedInUser.oldPassword">
-          </div>
-          <div class="field">
-            <label>New Password</label>
-            <input placeholder="Password" type="password" value.bind="loggedInUser.password">
-          </div>
-          <button class="ui brown submit button">Update</button>
         </div>
+
+
       </form>
-    </div>
+    <!--</div>-->
   </section>
 </template>

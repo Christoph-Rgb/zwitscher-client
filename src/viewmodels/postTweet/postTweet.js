@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import ZwitscherService from '../../services/zwitscher-service';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {TweetUpdate} from '../../services/messages';
+import {LoggedInUserUpdate} from '../../services/messages';
 
 @inject(ZwitscherService, EventAggregator)
 export class GlobalTimeline {
@@ -10,14 +10,26 @@ export class GlobalTimeline {
   tweetMessage = '';
   tweetImage = null;
 
+  eventSubscriptions = [];
+
   constructor(zs,ea) {
     this.zwitscherService = zs;
     this.eventAgregator = ea;
-    this.loggedInUser = this.zwitscherService.loggedInUser;
+    this.loggedInUser = this.zwitscherService.getLoggedInUser();
   }
 
   attached() {
+    this.eventSubscriptions = [];
+    this.eventSubscriptions.push (this.eventAgregator.subscribe(LoggedInUserUpdate, msg => {
+      this.loggedInUser = this.zwitscherService.getLoggedInUser();
+    }));
     initilizeUploadForm();
+  }
+
+  detached() {
+    this.eventSubscriptions.forEach(event => {
+      event.dispose();
+    })
   }
 
   postTweet() {
