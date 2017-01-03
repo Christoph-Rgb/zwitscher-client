@@ -4,7 +4,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {CompletedLoggedInUserUpdate, TweetUpdate} from '../../services/messages';
 
 @inject(ZwitscherService, EventAggregator)
-export class GlobalTimeline {
+export class PostTweet {
 
   loggedInUser = {};
   tweetMessage = '';

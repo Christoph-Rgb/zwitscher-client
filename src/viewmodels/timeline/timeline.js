@@ -38,6 +38,10 @@ export class Timeline {
     }));
     this.eventSubscriptions.push (this.eventAgregator.subscribe(CompletedLoggedInUserUpdate, msg => {
       this.refreshTimeline();
+      if (this.timelineUserID === this.loggedInUser._id){
+        this.loggedInUser = this.zwitscherService.getLoggedInUser();
+        this.timelineUser = this.zwitscherService.getLoggedInUser();
+      }
     }));
 
     this.refreshTimeline();
