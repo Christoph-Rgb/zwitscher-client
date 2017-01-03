@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import ZwitscherService from '../../services/zwitscher-service';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {TweetUpdate} from '../../services/messages';
+import {UsersChanged} from '../../services/messages';
 
 @inject(ZwitscherService, EventAggregator)
 export class GlobalTimeline {
@@ -14,12 +14,16 @@ export class GlobalTimeline {
     this.eventAgregator = ea;
     this.loggedInUser = this.zwitscherService.loggedInUser;
 
-    // this.eventAgregator.subscribe(TweetUpdate, msg => {
-    //   this.refreshTimeline();
-    // });
+    this.eventAgregator.subscribe(UsersChanged, msg => {
+      this.refreshUsers();
+    });
   }
 
   attached() {
+    this.refreshUsers();
+  }
+
+  refreshUsers(){
     this.zwitscherService.getUsers().then(foundUsers => {
       this.users = foundUsers;
     }).catch(err => {

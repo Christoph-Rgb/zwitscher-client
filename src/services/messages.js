@@ -15,3 +15,9 @@ export class LoggedInUserUpdate {
     this.status = status;
   }
 }
+
+export class UsersChanged {
+  constructor(status) {
+    this.status = status;
+  }
+}

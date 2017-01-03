@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import ZwitscherService from '../../services/zwitscher-service';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {TweetUpdate, LoggedInUserUpdate} from '../../services/messages';
+import {TweetUpdate, LoggedInUserUpdate, UsersChanged} from '../../services/messages';
 import {Router} from 'aurelia-router';
 
 @inject(ZwitscherService, EventAggregator, Router)
@@ -15,9 +15,13 @@ export class User {
     this.zwitscherService = zs;
     this.eventAgregator = ea;
     this.router = router;
-    this.loggedInUser = this.zwitscherService.loggedInUser;
+    this.loggedInUser = this.zwitscherService.getLoggedInUser();
 
     this.eventAgregator.subscribe(TweetUpdate, msg => {
+      this.refreshUser();
+    });
+
+    this.eventAgregator.subscribe(LoggedInUserUpdate, msg => {
       this.refreshUser();
     });
   }
@@ -30,8 +34,10 @@ export class User {
 
   followUser(userID) {
     this.zwitscherService.followUser(userID).then(result => {
-      this.loggedInUser.follows.push(userID);
-      this.refreshUser();
+      const indexToRemove = this.loggedInUser.follows.indexOf(userID);
+      if (indexToRemove === -1) {
+        this.loggedInUser.follows.push(userID);
+      }
       this.eventAgregator.publish(new LoggedInUserUpdate({}));
     }).catch(err => {
       console.log('error trying to follow user');
@@ -44,7 +50,6 @@ export class User {
         if (indexToRemove !== -1) {
           this.loggedInUser.follows.splice(indexToRemove, 1);
         }
-      this.refreshUser();
       this.eventAgregator.publish(new LoggedInUserUpdate({}));
       }
     ).catch(err => {
@@ -63,12 +68,13 @@ export class User {
       // this.eventAgregator.publish(new LoggedInUserUpdate({}));
 
       //https://github.com/aurelia/router/issues/201
-      this.router.navigateToRoute('reload');
+      // this.router.navigateToRoute('reload');
+
+        this.eventAgregator.publish(new UsersChanged({}));
       }
     ).catch(err => {
       console.log('error trying to remove user');
     })
-
   }
 
   refreshUser(){
