@@ -62,17 +62,27 @@ export default class ZwitscherService {
   }
 
   register(firstName, lastName, email, password, gender) {
-    const newUser = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      gender: gender,
-    };
-    this.ac.post('/api/users', newUser).then(res => {
-      // this.getUsers();
-      console.log(res);
+    return new Promise((resolve, reject) => {
+      const newUser = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        gender: gender,
+      };
+      this.ac.post('/api/users', newUser).then(res => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(res.response));
+        } else {
+          reject('error creating user');
+        }
+
+      });
+    }).catch(err => {
+      reject(err);
     });
+
+
   }
 
   login(email, password) {

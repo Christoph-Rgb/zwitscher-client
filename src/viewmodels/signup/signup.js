@@ -18,8 +18,10 @@ export class Signup {
   }
 
   register(e) {
-    this.zwitscherService.register(this.firstName, this.lastName, this.email, this.password, this.gender);
-    const status = this.zwitscherService.login(this.email, this.password);
-    this.ea.publish(new LoginStatus(status));
+    this.zwitscherService.register(this.firstName, this.lastName, this.email, this.password, this.gender).then(newUser => {
+      this.zwitscherService.login(this.email, this.password);
+    }).catch(err => {
+      console.log(err);
+    });
   }
 }
