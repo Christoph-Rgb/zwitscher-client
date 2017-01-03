@@ -8,19 +8,26 @@ export class GlobalTimeline {
 
   users = [];
   loggedInUser = {};
+  eventSubscriptions = [];
 
   constructor(zs, ea) {
     this.zwitscherService = zs
     this.eventAgregator = ea;
     this.loggedInUser = this.zwitscherService.loggedInUser;
-
-    this.eventAgregator.subscribe(UsersChanged, msg => {
-      this.refreshUsers();
-    });
   }
 
   attached() {
+    this.eventSubscriptions = [];
+    this.eventSubscriptions.push(this.eventAgregator.subscribe(UsersChanged, msg => {
+      this.refreshUsers();
+    }));
     this.refreshUsers();
+  }
+
+  detached() {
+    this.eventSubscriptions.forEach(event => {
+      event.dispose();
+    })
   }
 
   refreshUsers(){

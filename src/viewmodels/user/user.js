@@ -11,19 +11,30 @@ export class User {
   viewedUserID = '';
   viewedUser = {};
 
+  eventSubscriptions = [];
+
   constructor(zs,ea,router) {
     this.zwitscherService = zs;
     this.eventAgregator = ea;
     this.router = router;
     this.loggedInUser = this.zwitscherService.getLoggedInUser();
+  }
 
-    this.eventAgregator.subscribe(TweetUpdate, msg => {
+  attached() {
+    this.eventSubscriptions = [];
+    this.eventSubscriptions.push (this.eventAgregator.subscribe(TweetUpdate, msg => {
       this.refreshUser();
-    });
+    }));
 
-    this.eventAgregator.subscribe(LoggedInUserUpdate, msg => {
+    this.eventSubscriptions.push(this.eventAgregator.subscribe(LoggedInUserUpdate, msg => {
       this.refreshUser();
-    });
+    }));
+  }
+
+  detached() {
+    this.eventSubscriptions.forEach(event => {
+      event.dispose();
+    })
   }
 
   activate(userID) {

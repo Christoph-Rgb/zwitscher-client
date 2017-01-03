@@ -12,14 +12,12 @@ export class Timeline {
   timelineUser = {};
   timelineUserID = '';
 
+  eventSubscriptions = [];
+
   constructor(zs, ea) {
     this.zwitscherService = zs
     this.eventAgregator = ea;
     this.loggedInUser = this.zwitscherService.loggedInUser;
-
-    this.eventAgregator.subscribe(TweetUpdate, msg => {
-      this.refreshTimeline();
-    });
   }
 
   activate(timelineOptions) {
@@ -34,7 +32,18 @@ export class Timeline {
   }
 
   attached() {
+    this.eventSubscriptions = [];
+    this.eventSubscriptions.push (this.eventAgregator.subscribe(TweetUpdate, msg => {
+      this.refreshTimeline();
+    }));
+
     this.refreshTimeline();
+  }
+
+  detached() {
+    this.eventSubscriptions.forEach(event => {
+      event.dispose();
+    })
   }
 
   deleteTweet(tweetToDeleteID) {
