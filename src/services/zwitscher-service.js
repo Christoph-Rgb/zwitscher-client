@@ -21,8 +21,16 @@ export default class ZwitscherService {
     });
 
     ea.subscribe(LoggedInUserUpdate, msg => {
-      this.loggedInUser = getUser(this.loggedInUser._id);
+      this.getUser(this.loggedInUser._id).then(refreshedUser => {
+        this.loggedInUser = refreshedUser;
+      }).catch(err => {
+        console.log('error refreshing user');
+      });
     });
+  }
+
+  getLoggedInUser() {
+    return JSON.parse(JSON.stringify(this.loggedInUser));
   }
 
   getUser(userID){
@@ -160,6 +168,20 @@ export default class ZwitscherService {
         } else {
           reject(null);
         }
+      });
+    });
+  }
+
+  updateUser(updatedUser) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/users/' + updatedUser._id + '/update', updatedUser).then(result => {
+        if(result.statusCode === 201) {
+          resolve(JSON.parse(result.response));
+        } else {
+          reject(null);
+        }
+      }).catch(err => {
+        reject(err);
       });
     });
   }
