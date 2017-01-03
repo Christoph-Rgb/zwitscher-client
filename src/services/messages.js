@@ -10,7 +10,13 @@ export class TweetUpdate {
   }
 }
 
-export class LoggedInUserUpdate {
+export class TriggerLoggedInUserUpdate {
+  constructor(status) {
+    this.status = status;
+  }
+}
+
+export class CompletedLoggedInUserUpdate {
   constructor(status) {
     this.status = status;
   }

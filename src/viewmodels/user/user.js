@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import ZwitscherService from '../../services/zwitscher-service';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {TweetUpdate, LoggedInUserUpdate, UsersChanged} from '../../services/messages';
+import {TweetUpdate, TriggerLoggedInUserUpdate, CompletedLoggedInUserUpdate, UsersChanged} from '../../services/messages';
 import {Router} from 'aurelia-router';
 
 @inject(ZwitscherService, EventAggregator, Router)
@@ -26,7 +26,7 @@ export class User {
       this.refreshUser();
     }));
 
-    this.eventSubscriptions.push(this.eventAgregator.subscribe(LoggedInUserUpdate, msg => {
+    this.eventSubscriptions.push(this.eventAgregator.subscribe(CompletedLoggedInUserUpdate, msg => {
       this.refreshUser();
     }));
   }
@@ -49,7 +49,7 @@ export class User {
       if (indexToRemove === -1) {
         this.loggedInUser.follows.push(userID);
       }
-      this.eventAgregator.publish(new LoggedInUserUpdate({}));
+      this.eventAgregator.publish(new TriggerLoggedInUserUpdate({}));
     }).catch(err => {
       console.log('error trying to follow user');
     })
@@ -61,7 +61,7 @@ export class User {
         if (indexToRemove !== -1) {
           this.loggedInUser.follows.splice(indexToRemove, 1);
         }
-      this.eventAgregator.publish(new LoggedInUserUpdate({}));
+      this.eventAgregator.publish(new TriggerLoggedInUserUpdate({}));
       }
     ).catch(err => {
       console.log('error trying to unfollow user');

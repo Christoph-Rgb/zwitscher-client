@@ -1,30 +1,40 @@
 import {EventAggregator} from 'aurelia-event-aggregator';
 import ZwitscherService from '../../services/zwitscher-service';
 import {inject} from 'aurelia-framework';
-import {LoggedInUserUpdate} from '../../services/messages';
+import {CompletedLoggedInUserUpdate, TriggerLoggedInUserUpdate} from '../../services/messages';
 
 @inject(EventAggregator, ZwitscherService)
 export class Settings {
 
   loggedInUser = {};
 
+  eventSubscriptions = [];
+
   constructor(ea, zs) {
-    this.ea = ea;
+    this.eventAgregator = ea;
     this.zwitscherService = zs;
+  }
 
+  attached() {
+    this.eventSubscriptions = [];
+    this.eventSubscriptions.push (this.eventAgregator.subscribe(CompletedLoggedInUserUpdate, msg => {
+      this.refreshUser()
+    }));
     this.refreshUser();
+  }
 
-    // this.ea.subscribe(LoggedInUserUpdate, msg => {
-    //   this.refreshUser();
-    // });
+  detached() {
+    this.eventSubscriptions.forEach(event => {
+      event.dispose();
+    })
   }
 
   update() {
     this.zwitscherService.updateUser(this.loggedInUser).then(updatedUser => {
-      this.loggedInUser = updatedUser;
-      this.loggedInUser.oldPassword = '';
-      this.loggedInUser.password = '';
-      this.ea.publish(new LoggedInUserUpdate({}));
+      // this.loggedInUser = updatedUser;
+      // this.loggedInUser.oldPassword = '';
+      // this.loggedInUser.password = '';
+      this.eventAgregator.publish(new TriggerLoggedInUserUpdate({}));
     }).catch(err => {
       console.log('error updating user');
       this.refreshUser();

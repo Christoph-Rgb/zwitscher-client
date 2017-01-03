@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import ZwitscherService from '../../services/zwitscher-service';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {LoggedInUserUpdate} from '../../services/messages';
+import {CompletedLoggedInUserUpdate, TweetUpdate} from '../../services/messages';
 
 @inject(ZwitscherService, EventAggregator)
 export class GlobalTimeline {
@@ -20,7 +20,7 @@ export class GlobalTimeline {
 
   attached() {
     this.eventSubscriptions = [];
-    this.eventSubscriptions.push (this.eventAgregator.subscribe(LoggedInUserUpdate, msg => {
+    this.eventSubscriptions.push (this.eventAgregator.subscribe(CompletedLoggedInUserUpdate, msg => {
       this.loggedInUser = this.zwitscherService.getLoggedInUser();
     }));
     initilizeUploadForm();

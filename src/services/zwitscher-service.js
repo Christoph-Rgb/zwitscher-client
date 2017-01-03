@@ -1,6 +1,5 @@
 import {inject} from 'aurelia-framework';
-import Fixtures from './fixtures';
-import {TotalUpdate, LoginStatus, LoggedInUserUpdate} from './messages';
+import {TotalUpdate, LoginStatus, TriggerLoggedInUserUpdate, CompletedLoggedInUserUpdate} from './messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import AsyncHttpClient from './async-http-client';
 
@@ -20,9 +19,10 @@ export default class ZwitscherService {
       }
     });
 
-    ea.subscribe(LoggedInUserUpdate, msg => {
+    ea.subscribe(TriggerLoggedInUserUpdate, msg => {
       this.getUser(this.loggedInUser._id).then(refreshedUser => {
         this.loggedInUser = refreshedUser;
+        ea.publish(new CompletedLoggedInUserUpdate({}));
       }).catch(err => {
         console.log('error refreshing user');
       });
