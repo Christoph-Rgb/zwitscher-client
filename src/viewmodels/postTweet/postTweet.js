@@ -24,6 +24,7 @@ export class PostTweet {
       this.loggedInUser = this.zwitscherService.getLoggedInUser();
     }));
     initilizeUploadForm();
+    initializeFormValidation(this.postTweet.bind(this), this.reinitializeUploadForm.bind(this));
   }
 
   detached() {
@@ -85,6 +86,35 @@ function getBase64(file) {
     };
     reader.readAsBinaryString(file);
   });
+}
+
+function initializeFormValidation(onSuccessFunction, onFailureFunction) {
+  $('#tweetForm')
+    .form({
+      on: 'submit',
+      inline: true,
+      onSuccess: function(event){
+        //prevents redirect
+        event.preventDefault();
+        onSuccessFunction();
+      },
+      onFailure: function(){
+        onFailureFunction();
+        return false;
+      },
+      fields: {
+        tweetMessage: {
+          identifier  : 'tweetMessage',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'No message no tweet'
+            }
+          ]
+        }
+      }
+    })
+  ;
 }
 
 function initilizeUploadForm(){
