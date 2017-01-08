@@ -32,8 +32,7 @@ export class Settings {
   update() {
     this.zwitscherService.updateUser(this.loggedInUser).then(updatedUser => {
       //refreshes the token after user was updated
-      //forces redirect to globalTimeline :(
-      this.zwitscherService.login(updatedUser.email, updatedUser.password);
+      this.zwitscherService.reAuhtenticate(updatedUser.email, updatedUser.password);
       this.eventAgregator.publish(new TriggerLoggedInUserUpdate({}));
     }).catch(err => {
       console.log('error updating user');

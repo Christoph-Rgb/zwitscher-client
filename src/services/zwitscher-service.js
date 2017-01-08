@@ -90,7 +90,7 @@ export default class ZwitscherService {
       email: email,
       password: password
     };
-    this.ac.authenticate('/api/users/authenticate', user);
+    this.ac.login('/api/users/authenticate', user);
   }
 
   logout() {
@@ -100,6 +100,15 @@ export default class ZwitscherService {
     };
     this.ac.clearAuthentication();
     this.ea.publish(new LoginStatus(status));
+  }
+
+  reAuhtenticate(email, password) {
+    const user = {
+      email: email,
+      password: password
+    };
+    // this.ac.clearAuthentication();
+    this.ac.authenticate('/api/users/authenticate', user);
   }
 
   isAuthenticated() {

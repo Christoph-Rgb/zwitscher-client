@@ -27,25 +27,31 @@ export default class AsyncHttpClient {
     return this.http.delete(url);
   }
 
+  login(url, user) {
+    this.authenticate(url, user).then(successStatus => {
+      this.ea.publish(new LoginStatus(successStatus));
+    }).catch(errorStatus => {
+      this.ea.publish(new LoginStatus(errorStatus));
+    });
+  }
   authenticate(url, user) {
-
-    // this.ea.publish(new LoginStatus(true));
-
-    this.http.post(url, user).then(response => {
-      const status = response.content;
-      if (status.success) {
-        localStorage.zwitscher = JSON.stringify(response.content);
-        this.http.configure(configuration => {
-          configuration.withHeader('Authorization', 'bearer ' + response.content.token);
-        });
-      }
-      this.ea.publish(new LoginStatus(status));
-    }).catch(error => {
-      const status = {
-        success: false,
-        message: 'service not available'
-      };
-      this.ea.publish(new LoginStatus(status));
+    return new Promise((resolve, reject) => {
+      this.http.post(url, user).then(response => {
+        const status = response.content;
+        if (status.success) {
+          localStorage.zwitscher = JSON.stringify(response.content);
+          this.http.configure(configuration => {
+            configuration.withHeader('Authorization', 'bearer ' + response.content.token);
+          });
+        }
+        resolve(status);
+      }).catch(error => {
+        const status = {
+          success: false,
+          message: 'service not available'
+        };
+        reject(status);
+      });
     });
   }
 
@@ -57,8 +63,6 @@ export default class AsyncHttpClient {
   }
 
   isAuthenticated() {
-
-    // return false;
 
     let authenticated = false;
     if (localStorage.zwitscher !== 'null') {
