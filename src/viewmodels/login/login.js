@@ -9,8 +9,50 @@ export class Login {
     this.prompt = '';
   }
 
-  login(e) {
+  attached(){
+    initializeFormValidation(this.login.bind(this), null);
+  }
+
+  login() {
     console.log(`Trying to log in ${this.email}`);
     this.zwitscherService.login(this.email, this.password);
   }
+}
+
+function initializeFormValidation(onSuccessFunction, onFailureFunction) {
+  $('#loginForm')
+    .form({
+      on: 'submit',
+      inline: true,
+      onSuccess: function(event){
+        //prevents redirect
+        event.preventDefault();
+        onSuccessFunction();
+      },
+      onFailure: function(){
+        onFailureFunction();
+        return false;
+      },
+      fields: {
+        email: {
+          identifier  : 'email',
+          rules: [
+            {
+              type   : 'email',
+              prompt : 'Enter valid email address'
+            }
+          ]
+        },
+        password: {
+          identifier  : 'password',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'Enter password'
+            }
+          ]
+        }
+      }
+    })
+  ;
 }
