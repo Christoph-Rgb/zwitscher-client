@@ -1,10 +1,6 @@
 <template>
   <section class="ui basic segment">
-    <!--<div class="ui middle aligned center aligned grid">-->
-      <!--<aside class="ui eight wide column">-->
-        <!--<img src="${loggedInUser.profilePicture}" class="ui centered medium image">-->
-      <!--</aside>-->
-      <form submit.delegate="update()" class="ui eight wide column fluid form">
+      <form class="ui eight wide column fluid form" id="settingsForm">
         <div class="ui middle aligned center aligned grid">
           <aside class="ui eight wide column">
             <img src="${loggedInUser.profilePicture}" class="ui centered medium image">
@@ -14,33 +10,42 @@
             <div class="two fields">
               <div class="field">
                 <label>First Name</label>
-                <input placeholder="First Name" type="text" value.bind="loggedInUser.firstName">
+                <input placeholder="First Name" name="firstName" type="text" value.bind="loggedInUser.firstName">
               </div>
               <div class="field">
                 <label>Last Name</label>
-                <input placeholder="Last Name" type="text" value.bind="loggedInUser.lastName">
+                <input placeholder="Last Name" name="lastName" type="text" value.bind="loggedInUser.lastName">
               </div>
             </div>
             <div class="field">
               <label>Gender</label>
-              <select class="ui dropdown" value.bind="loggedInUser.gender">
+              <select class="ui dropdown" name="gender" value.bind="loggedInUser.gender">
                 <option value="M">male</option>
                 <option value="W">female</option>
               </select>
             </div>
             <div class="field">
               <label>Email</label>
-              <input placeholder="Email" type="text" value.bind="loggedInUser.email">
+              <input placeholder="Email" name="email" type="text" value.bind="loggedInUser.email">
             </div>
             <div class="field">
               <label>Old Password</label>
-              <input placeholder="Password" type="password" value.bind="loggedInUser.oldPassword">
+              <input placeholder="Password" name="oldPassword" type="password" value.bind="loggedInUser.oldPassword">
             </div>
+
+            <h4 class="ui dividing header">
+              optional
+            </h4>
+
             <div class="field">
               <label>New Password</label>
-              <input placeholder="Password" type="password" value.bind="loggedInUser.password">
+              <input placeholder="New Password" name="password" type="password" value.bind="loggedInUser.password">
             </div>
-            <button class="ui brown submit button">Update</button>
+            <div class="field">
+              <label>Confirm New Password</label>
+              <input placeholder="Confirm New Password" name="passwordConfirm" type="password" value.bind="loggedInUser.passwordConfirm">
+            </div>
+            <button class="ui brown button">Update</button>
           </div>
         </div>
 
