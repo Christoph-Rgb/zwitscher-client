@@ -1,19 +1,33 @@
 <template>
   <div class="ui fluid stackable cards">
     <compose if.bind="loggedInUser._id === timelineUser._id" view-model="../postTweet/postTweet" containerless></compose>
+
+    <div if.bind="loggedInUser._id === timelineUser._id || loggedInUser.scope === admin" class="ui fluid raised card">
+      <div class="extra content">
+        <div class="ui right floated">
+          <button if.bind="!bulkDeleteActive" class="ui basic brown item button" click.delegate="showOrHideEditItems()">
+            <i class="configure icon"></i>
+            Edit Items
+          </button>
+          <div if.bind="bulkDeleteActive" class="ui two buttons">
+            <button id="deleteSelectedButton" class="ui basic red button" click.delegate="deleteMultipleTweets()">Delete</button>
+            <button id="deleteSelectedCancelButton" class="ui basic grey button" click.delegate="showOrHideEditItems()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div repeat.for="tweet of tweets" class="ui fluid raised card">
-      <!--{{#if tweet.canDelete}}-->
-      <!--<div class="extra content deleteSelector" style="display:none">-->
-      <!--<div class="right floated">-->
-      <!--<div class="field">-->
-      <!--<div class="ui toggle checkbox">-->
-      <!--<input id="{{tweet._id}}" class="deleteCheckbox" type="checkbox" name="test">-->
-      <!--<label>Delete</label>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--{{/if}}-->
+      <div if.bind="tweet.canDelete && bulkDeleteActive" class="extra content">
+        <div class="right floated">
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input class="deleteCheckbox" type="checkbox" checked.bind="tweet.checkedForDelete">
+              <label>Delete</label>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="extra content">
         <div class="left floated author">
           <img class="ui avatar image" src="${tweet.user.profilePicture}"> ${tweet.user.firstName} ${tweet.user.lastName}

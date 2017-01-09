@@ -11,6 +11,7 @@ export class Timeline {
   loggedInUser = {};
   timelineUser = {};
   timelineUserID = '';
+  bulkDeleteActive = false;
 
   eventSubscriptions = [];
 
@@ -69,6 +70,25 @@ export class Timeline {
     })
   }
 
+  deleteMultipleTweets() {
+    let tweetsToDelete = [];
+    this.tweets.forEach(tweet => {
+      if(tweet.checkedForDelete) {
+        tweetsToDelete.push(tweet._id);
+      }
+    });
+
+    if (tweetsToDelete.length > 0) {
+      this.zwitscherService.deleteMultipleTweets(tweetsToDelete).then(result => {
+        this.eventAgregator.publish(new TweetUpdate({}));
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+
+    this.showOrHideEditItems();
+  }
+
   refreshTimeline(){
     this.tweets = [];
 
@@ -92,12 +112,21 @@ export class Timeline {
       });
 
       tweets.forEach(tweet => {
+        tweet.checkedForDelete = false;
         tweet.postedString = new Date(tweet.posted).toLocaleString('en-GB');
         tweet.canDelete = (tweet.user !== null && this.loggedInUser._id === tweet.user._id) || this.loggedInUser.scope === 'admin';
         this.tweets.push(tweet);
-      })
+      });
 
       console.log(this.tweets);
     });
+  }
+
+  showOrHideEditItems(){
+    this.tweets.forEach(tweet => {
+      tweet.checkedForDelete = false;
+    });
+
+    this.bulkDeleteActive = !this.bulkDeleteActive;
   }
 }

@@ -155,6 +155,18 @@ export default class ZwitscherService {
     });
   };
 
+  deleteMultipleTweets(tweetsToDelete) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/deleteTweetsJob/' + JSON.stringify(tweetsToDelete)).then(result => {
+        if(result.statusCode === 204) {
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      });
+    });
+  };
+
   postTweet(tweet) {
     return new Promise((resolve, reject) => {
       this.ac.post('/api/tweets', tweet).then(result => {
