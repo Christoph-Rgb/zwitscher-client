@@ -16,15 +16,57 @@ export default class AsyncHttpClient {
   }
 
   get(url) {
-    return this.http.get(url);
+    return new Promise((resolve, reject) => {
+      this.http.get(url).then(result => {
+        resolve(result);
+      }).catch(err => {
+        if (err.statusCode === 401){
+          const status = {
+            success: false,
+            message: ''
+          };
+          this.clearAuthentication();
+          this.ea.publish(new LoginStatus(status));
+        }
+        reject(err);
+      });
+    });
   }
 
   post(url, obj) {
-    return this.http.post(url, obj);
+    return new Promise((resolve, reject) => {
+      this.http.post(url, obj).then(result => {
+        resolve(result);
+      }).catch(err => {
+        if (err.statusCode === 401){
+          const status = {
+            success: false,
+            message: ''
+          };
+          this.clearAuthentication();
+          this.ea.publish(new LoginStatus(status));
+        }
+        reject(err);
+      });
+    });
   }
 
   delete(url) {
-    return this.http.delete(url);
+    return new Promise((resolve, reject) => {
+      this.http.delete(url).then(result => {
+        resolve(result);
+      }).catch(err => {
+        if (err.statusCode === 401){
+          const status = {
+            success: false,
+            message: ''
+          };
+          this.clearAuthentication();
+          this.ea.publish(new LoginStatus(status));
+        }
+        reject(err);
+      });
+    });
   }
 
   login(url, user) {
