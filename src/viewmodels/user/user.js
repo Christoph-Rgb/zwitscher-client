@@ -29,6 +29,12 @@ export class User {
     this.eventSubscriptions.push(this.eventAgregator.subscribe(CompletedLoggedInUserUpdate, msg => {
       this.refreshUser();
     }));
+
+    this.eventSubscriptions.push (this.eventAgregator.subscribe(UsersChanged, msg => {
+      if(msg.status.removedID === this.viewedUser._id) {
+        this.router.navigateToRoute('users');
+      }
+    }));
   }
 
   detached() {
@@ -81,7 +87,7 @@ export class User {
       //https://github.com/aurelia/router/issues/201
       // this.router.navigateToRoute('reload');
 
-        this.eventAgregator.publish(new UsersChanged({}));
+        this.eventAgregator.publish(new UsersChanged({ removedID: userID }));
       }
     ).catch(err => {
       console.log('error trying to remove user');
