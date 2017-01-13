@@ -89,6 +89,23 @@ export class Timeline {
     this.showOrHideEditItems();
   }
 
+  deleteAllUserTweets(userID) {
+    let tweetsToDelete = [];
+    this.tweets.forEach(tweet => {
+      if(tweet.user._id === userID) {
+        tweetsToDelete.push(tweet._id);
+      }
+    });
+
+    if (tweetsToDelete.length > 0) {
+      this.zwitscherService.deleteMultipleTweets(tweetsToDelete).then(result => {
+        this.eventAgregator.publish(new TweetUpdate({}));
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+  }
+
   refreshTimeline(){
     this.tweets = [];
 

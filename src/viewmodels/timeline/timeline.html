@@ -2,9 +2,13 @@
   <div class="ui fluid stackable cards">
     <compose if.bind="loggedInUser._id === timelineUser._id" view-model="../postTweet/postTweet" containerless></compose>
 
-    <div if.bind="loggedInUser._id === timelineUser._id || loggedInUser.scope === admin" class="ui fluid raised card">
+    <div if.bind="loggedInUser._id === timelineUser._id || loggedInUser.scope === 'admin'" class="ui fluid raised card">
       <div class="extra content">
         <div class="ui right floated">
+          <button if.bind="!bulkDeleteActive" class="ui basic brown item button" click.delegate="deleteAllUserTweets(timelineUser._id)">
+            <i class="trash icon"></i>
+            Delete All Tweets
+          </button>
           <button if.bind="!bulkDeleteActive" class="ui basic brown item button" click.delegate="showOrHideEditItems()">
             <i class="configure icon"></i>
             Edit Items
