@@ -2,6 +2,14 @@
   <div class="ui fluid raised card">
     <form class="ui form" id="tweetForm" enctype='multipart/form-data'>
       <div class="ui fluid raised card">
+        <div if.bind="errorMessage.show" class="extra content">
+          <div class="ui negative message transition">
+            <i class="close icon" click.delegate="hideErrorMessage()"></i>
+            <div class="header">
+              ${errorMessage.message}
+            </div>
+          </div>
+        </div>
         <div class="extra content">
           <div class="left floated author">
             <img class="ui avatar image" src="${loggedInUser.profilePicture}"> ${loggedInUser.firstName} ${loggedInUser.lastName}

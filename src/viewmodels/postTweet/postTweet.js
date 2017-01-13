@@ -9,6 +9,10 @@ export class PostTweet {
   loggedInUser = {};
   tweetMessage = '';
   tweetImage = null;
+  errorMessage = {
+    'show': false,
+    'message': '',
+  };
 
   eventSubscriptions = [];
 
@@ -39,21 +43,26 @@ export class PostTweet {
     };
 
     if (this.tweetImage && this.tweetImage.length > 0) {
-      getBase64(this.tweetImage[0]).then(base64EncodedImage => {
-
-        tweet.image = base64EncodedImage;
-        this.zwitscherService.postTweet(tweet).then(postedTweet => {
-          console.log('tweet posted');
-          //https://github.com/aurelia/router/issues/201
-          // this.router.navigateToRoute('reload');
-          this.eventAgregator.publish(new TweetUpdate({}));
-          this.reinitializeUploadForm();
+      if (this.tweetImage[0].size > 1000000) {
+        this.errorMessage.show = true;
+        this.errorMessage.message = 'File size must be less than 1MB';
+        this.reinitializeUploadForm();
+      } else {
+        getBase64(this.tweetImage[0]).then(base64EncodedImage => {
+          tweet.image = base64EncodedImage;
+          this.zwitscherService.postTweet(tweet).then(postedTweet => {
+            console.log('tweet posted');
+            //https://github.com/aurelia/router/issues/201
+            // this.router.navigateToRoute('reload');
+            this.eventAgregator.publish(new TweetUpdate({}));
+            this.reinitializeUploadForm();
+          }).catch(err => {
+            console.log('tweet could not be posted');
+          })
         }).catch(err => {
-          console.log('tweet could not be posted');
-        })
-      }).catch(err => {
           console.log('error encoding image');
         });
+      }
     } else {
       this.zwitscherService.postTweet(tweet).then(postedTweet => {
         this.eventAgregator.publish(new TweetUpdate({}));
@@ -62,6 +71,11 @@ export class PostTweet {
         console.log('tweet could not be posted');
       })
     }
+  }
+
+  hideErrorMessage() {
+    this.errorMessage.show = false;
+    this.errorMessage.message = '';
   }
 
   reinitializeUploadForm() {
