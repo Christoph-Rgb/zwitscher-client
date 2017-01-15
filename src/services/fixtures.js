@@ -1,6 +1,6 @@
 export default class Fixtures {
 
-  baseUrl = 'http://localhost:4000';
-  // baseUrl = 'http://zwitscher.herokuapp.com:80';
+  // baseUrl = 'http://localhost:4000';
+  baseUrl = 'https://zwitscher.herokuapp.com';
 
 }

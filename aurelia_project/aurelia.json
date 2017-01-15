@@ -16,19 +16,19 @@
         "transform-es2015-modules-amd"
       ]
     },
-    "source": "src\\**\\*.js"
+    "source": "src/**/*.js"
   },
   "markupProcessor": {
     "id": "none",
     "displayName": "None",
     "fileExtension": ".html",
-    "source": "src\\**\\*.html"
+    "source": "src/**/*.html"
   },
   "cssProcessor": {
     "id": "none",
     "displayName": "None",
     "fileExtension": ".css",
-    "source": "src\\**\\*.css"
+    "source": "src/**/*.css"
   },
   "editor": {
     "id": "vscode",
@@ -37,15 +37,15 @@
   "unitTestRunner": {
     "id": "karma",
     "displayName": "Karma",
-    "source": "test\\unit\\**\\*.js"
+    "source": "test/unit/**/*.js"
   },
   "paths": {
     "root": "src",
-    "resources": "src\\resources",
-    "elements": "src\\resources\\elements",
-    "attributes": "src\\resources\\attributes",
-    "valueConverters": "src\\resources\\value-converters",
-    "bindingBehaviors": "src\\resources\\binding-behaviors"
+    "resources": "src/resources",
+    "elements": "src/resources/elements",
+    "attributes": "src/resources/attributes",
+    "valueConverters": "src/resources/value-converters",
+    "bindingBehaviors": "src/resources/binding-behaviors"
   },
   "testFramework": {
     "id": "jasmine",
@@ -83,15 +83,15 @@
       {
         "name": "app-bundle.js",
         "source": [
-          "[**\\*.js]",
-          "**\\*.{css,html}"
+          "[**/*.js]",
+          "**/*.{css,html}"
         ]
       },
       {
         "name": "vendor-bundle.js",
         "prepend": [
-          "node_modules\\bluebird\\js\\browser\\bluebird.core.js",
-          "node_modules\\requirejs\\require.js"
+          "node_modules/bluebird/js/browser/bluebird.core.js",
+          "node_modules/requirejs/require.js"
         ],
         "dependencies": [
           "aurelia-binding",
@@ -119,17 +119,17 @@
           "text",
           {
             "name": "aurelia-templating-resources",
-            "path": "..\\node_modules\\aurelia-templating-resources\\dist\\amd",
+            "path": "../node_modules/aurelia-templating-resources/dist/amd",
             "main": "aurelia-templating-resources"
           },
           {
             "name": "aurelia-templating-router",
-            "path": "..\\node_modules\\aurelia-templating-router\\dist\\amd",
+            "path": "../node_modules/aurelia-templating-router/dist/amd",
             "main": "aurelia-templating-router"
           },
           {
             "name": "aurelia-testing",
-            "path": "..\\node_modules\\aurelia-testing\\dist\\amd",
+            "path": "../node_modules/aurelia-testing/dist/amd",
             "main": "aurelia-testing",
             "env": "dev"
           },

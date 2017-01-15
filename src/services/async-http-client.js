@@ -107,7 +107,7 @@ export default class AsyncHttpClient {
   isAuthenticated() {
 
     let authenticated = false;
-    if (localStorage.zwitscher !== 'null') {
+    if (localStorage.zwitscher !== 'null' && localStorage.zwitscher !== undefined) {
       authenticated = true;
       this.http.configure(http => {
         const auth = JSON.parse(localStorage.zwitscher);
