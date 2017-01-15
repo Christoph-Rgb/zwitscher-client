@@ -19,9 +19,14 @@ export class Signup {
 
   attached() {
     initializeFormValidation(this.register.bind(this), null);
+
+    $('#signupForm').on('submit', function () {
+      $('#signupForm').addClass('loading disabled');
+    });
   }
 
   register() {
+
     this.zwitscherService.register(this.firstName, this.lastName, this.email, this.password, this.gender).then(newUser => {
       this.zwitscherService.login(this.email, this.password);
     }).catch(err => {

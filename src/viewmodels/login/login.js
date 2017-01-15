@@ -11,10 +11,15 @@ export class Login {
 
   attached(){
     initializeFormValidation(this.login.bind(this), null);
+
+    $('#loginForm').on('submit', function () {
+      $('#loginForm').addClass('loading disabled');
+    });
   }
 
   login() {
     console.log(`Trying to log in ${this.email}`);
+
     this.zwitscherService.login(this.email, this.password);
   }
 }
